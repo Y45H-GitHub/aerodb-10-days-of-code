@@ -4,59 +4,44 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class Page {
-    static final int PAGE_SIZE = 4096;
+    public static final int PAGE_SIZE = 4096; // Standard 4KB
     private int pageID;
     private byte[] data;
 
-    public Page(byte[] data, int pageID) {
-        this.data = data;
+    // CONSTRUCTOR 1: Creating a brand new, empty page
+    public Page(int pageID) {
         this.pageID = pageID;
-        this.data=new byte[PAGE_SIZE];
+        this.data = new byte[PAGE_SIZE]; // 4KB of empty zeros
     }
 
-    public Page(int pageID){
+    // CONSTRUCTOR 2: Loading an existing page from disk
+    public Page(int pageID, byte[] data) {
         this.pageID = pageID;
-        this.data=new byte[PAGE_SIZE];
-    }
-
-    public Page(int pageID, byte[] data){
-        this.pageID = pageID;
-        if(data.length!=PAGE_SIZE){
-            throw new IllegalArgumentException("(ERROR!)Data must be of 4096 bytes");
+        if (data.length != PAGE_SIZE) {
+            throw new IllegalArgumentException("ERROR: Page must be exactly 4096 bytes");
         }
-        this.data=data;
+        this.data = data; // Keep the data we passed in!
     }
 
     /**
-    * HELPER METHOD TO READ AN INTEGER FROM A SPECIFIC OFFSET
-    * OFFSET -
-    */
-    public void setInt(int offset, int value){
-        ByteBuffer.wrap(data).putInt(offset,value);
+     * WRITE AN INTEGER
+     * Helper to write 4 bytes at a specific location.
+     * Example: setInt(0, 5) writes the Page ID at the very top.
+     */
+    public void setInt(int offset, int value) {
+        // Wrap creates a "view" of the array, puts the int, and updates the original array
+        ByteBuffer.wrap(data).putInt(offset, value);
     }
 
-    public void getInt(int offset){
-        ByteBuffer.wrap(data).getInt(offset);
+    /**
+     * READ AN INTEGER
+     * Helper to read 4 bytes from a location.
+     */
+    public int getInt(int offset) {
+        return ByteBuffer.wrap(data).getInt(offset);
     }
 
-    @Override
-    public String toString() {
-        return "PageID : " + pageID;
-    }
-
-    public int getPageID() {
-        return pageID;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setPageID(int pageID) {
-        this.pageID = pageID;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
-    }
+    // --- Getters and Setters ---
+    public int getPageID() { return pageID; }
+    public byte[] getData() { return data; }
 }
