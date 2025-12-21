@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class Page {
+
     public static final int PAGE_SIZE = 4096; // Standard 4KB
     private int pageID;
     private byte[] data;
