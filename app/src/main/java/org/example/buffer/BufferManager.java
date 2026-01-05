@@ -19,7 +19,7 @@ public class BufferManager {
     public BufferManager(HeapFile diskManager, int maxPages) {
         this.diskManager = diskManager;
         this.maxPages = maxPages;
-        this.dirtyPages=new HashMap<>();
+        this.dirtyPages=new HashMap<>();    
 
         this.cachePages = new LinkedHashMap<>(maxPages, 0.75f, true){
             @Override
